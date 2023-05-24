@@ -9,6 +9,9 @@
 #include <chrono>
 #include <tchar.h>
 #include <map>
+#include <random>
+#include <ctime>
+#include <cstdlib>
 
 std::string getFileText(){
     std::ifstream t("input.txt");
@@ -49,7 +52,7 @@ int SimulateKeyPress(std::vector<wchar_t> v){
 }
 
 int SimulateKeyPressRusCopy(std::vector<wchar_t> v){
-    byte simb; 
+    std::srand(std::time(nullptr));
     for(int i = 0; i<v.size(); i++){
         std::cout << '\n' << std::hex << (int)v[i] - 0x20;
         //*
@@ -64,7 +67,8 @@ int SimulateKeyPressRusCopy(std::vector<wchar_t> v){
         if(v[i+1] == 0x20)
             inp.ki.wVk = 0x20;
         SendInput(1, &inp, sizeof(inp));//*/
-        Sleep(20);
+        Sleep((std::rand() / ((RAND_MAX + 1u) / 10))*30);
+        //Sleep(5);
     }
     return 0;
 }
@@ -74,7 +78,7 @@ int indexof(std::string templ, wchar_t wch){
     //std::cout << std::hex << wch << "\n";
     int ind = 0;
     for(int i = 0; i<templ.length(); i++){
-        if(templ[i+1] - 0xffff0000 == wch){        
+        if(templ[i+1] - 0xffff0000 == wch){
             //std::cout << "\nindex of end in for with i: " << i;
             return ind;
         }
